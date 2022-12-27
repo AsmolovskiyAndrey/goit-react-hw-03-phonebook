@@ -10,6 +10,23 @@ export class App extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    // console.log('App componentDidMount');
+    const contacts = localStorage.getItem('contacts');
+    const parsedContacts = JSON.parse(contacts);
+    if (parsedContacts) {
+      this.setState({ contacts: parsedContacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    // console.log('App componentDidUpdate');
+    if (this.state.contacts !== prevState.contacts) {
+      // console.log('Обновлено поле contacts');
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   addContact = data => {
     const { name, number } = data;
     if (this.checkDoubleContact(data)) {
